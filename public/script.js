@@ -7,3 +7,6 @@ function createUUID() {
     return v.toString(16);
   });
 }
+function getIt() {
+  console.log('get it triggered');
+}
