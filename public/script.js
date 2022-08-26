@@ -3,10 +3,19 @@
 function createUUID() {
   return 'xxxxxxx'.replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,
-      v = c == 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
+      v = c == 'x' ? r : (r & 0x3) | 0x8
+    return v.toString(16)
+  })
 }
-function getIt() {
-  console.log('get it triggered');
+async function getIt() {
+  console.log('get it triggered')
+  fetch('https://json-server-jchvgz--3000.local.webcontainer.io/api/v1/courses')
+    .then((response) => response.json())
+    .then((data) => {
+      for (datum in data) {
+        document.getElementById(
+          'course'
+        ).innerHTML += `<option value=${data[datum].id}>${data[datum].display}</option>`
+      }
+    })
 }

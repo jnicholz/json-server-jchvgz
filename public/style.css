@@ -1,2 +1,6 @@
 /* TODO: make it look awesome. */
 /* TODO: make it responsive. */
+#restOfBody {
+  display: none;
+  background-color: cadetblue;
+}
