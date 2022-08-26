@@ -19,3 +19,10 @@ async function getIt() {
       }
     })
 }
+function peekABoo(data) {
+  if (data != 0) {
+    document.getElementById('restOfBody').style.display = 'block'
+  } else {
+    document.getElementById('restOfBody').style.display = 'none'
+  }
+}

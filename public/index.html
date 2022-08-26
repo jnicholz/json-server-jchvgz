@@ -22,6 +22,7 @@
         id="course"
         name="course"
         data-cy="course_select"
+        onchange="peekABoo(this.selectedIndex)"
       >
         <!-- TO Done: The following options are currently static values to show you sample data. 
          Use fetch to replace them with dynamic data from GET https://json-server-ft3qa5--3000.local.webcontainer.io/api/v1/courses 
@@ -31,15 +32,24 @@
 
       <div id="restOfBody">
         <br />
-        <!-- TODO: Don't show the uvu id text input box until a course was selected above. -->
-        <!-- TODO: If course ever becomes unselected, don't show the uvu id text input box.-->
+        <!-- TO Done: Don't show the uvu id text input box until a course was selected above. -->
+        <!-- TO Done: If course ever becomes unselected, don't show the uvu id text input box.-->
+
         <label for="uvuId">UVU ID</label>
         <br />
         <!-- TODO: write `10234567` as sample data on the input field below  -->
         <!-- TODO: Ensure the character length never exceeds 8 -->
         <!-- TODO: Only numbers, no letters or other characters-->
         <!-- TODO: When character length reaches 8 and it's only digits, fire off ajax request, if 200 or 304, display results, else appropriately guide the user. -->
-        <input type="text" id="uvuId" name="uvuId" data-cy="uvuId_input" />
+        <input
+          type="number"
+          id="uvuId"
+          name="uvuId"
+          data-cy="uvuId_input"
+          max="99999999"
+          min="10000000"
+          onchange=""
+        />
         <!-- TODO: The following options are currently static values to show you an example.  -->
         <!-- You must replace them with dynamic data by ajaxing GET https://json-server-ft3qa5--3000.local.webcontainer.io/logs?courseId=<courseID>&uvuId=<uvuID> -->
         <h3 id="uvuIdDisplay" data-cy="uvuIdDisplay">
