@@ -7,8 +7,8 @@ function createUUID() {
     return v.toString(16)
   })
 }
-async function getIt() {
-  console.log('get it triggered')
+async function getCourses() {
+  console.log('get Courses triggered')
   fetch('https://json-server-jchvgz--3000.local.webcontainer.io/api/v1/courses')
     .then((response) => response.json())
     .then((data) => {
@@ -25,4 +25,28 @@ function peekABoo(data) {
   } else {
     document.getElementById('restOfBody').style.display = 'none'
   }
+}
+
+async function checkIt(data){
+  console.log(data)
+  if (!isNaN(data)){
+    if (data >9999999){
+      console.log('it be 8 char' )
+      document.getElementById('uvuIdDisplay').innerText = `Student Logs for ${data}`
+      await getNotes(data)
+    }
+  }
+}
+async function getNotes(id){
+  console.log('get notes triggered')
+  fetch('https://json-server-jchvgz--3000.local.webcontainer.io/api/v1/logs')
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data)
+      // for (datum in data) {
+      //   document.getElementById(
+      //     'course'
+      //   ).innerHTML += `<option value=${data[datum].id}>${data[datum].display}</option>`
+      // }
+    })
 }

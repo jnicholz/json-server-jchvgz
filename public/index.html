@@ -15,7 +15,7 @@
     <!-- TO Done: Load your CSS file -->
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body onload="getIt()">
+  <body onload="getCourses()">
     <form>
       <select
         aria-label="Select Course"
@@ -48,12 +48,12 @@
           data-cy="uvuId_input"
           max="99999999"
           min="10000000"
-          onchange=""
+          oninput="checkIt(this.value)"
         />
         <!-- TODO: The following options are currently static values to show you an example.  -->
         <!-- You must replace them with dynamic data by ajaxing GET https://json-server-ft3qa5--3000.local.webcontainer.io/logs?courseId=<courseID>&uvuId=<uvuID> -->
         <h3 id="uvuIdDisplay" data-cy="uvuIdDisplay">
-          Studnet Logs for 10234567
+          
         </h3>
         <ul data-cy="logs">
           <!-- TODO: Click anywhere on the log to toggle visibility of the log (text only, not the date)-->
