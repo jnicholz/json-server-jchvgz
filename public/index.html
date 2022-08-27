@@ -1,18 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-  <!-- TO Done: set the lang attribute to American English -->
   <head>
     <title>Student Log</title>
-    <!-- TO Done: set the characterset to utf8 -->
     <meta charset="UTF-8" />
-
-    <!-- TO Done: temporarily use stackoverflow's favicon. "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico"-->
     <link
       rel="icon"
       type="image/icon"
       href="https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico"
     />
-    <!-- TO Done: Load your CSS file -->
     <link rel="stylesheet" href="style.css" />
   </head>
   <body onload="getCourses()">
@@ -24,23 +19,13 @@
         data-cy="course_select"
         onchange="peekABoo(this.selectedIndex)"
       >
-        <!-- TO Done: The following options are currently static values to show you sample data. 
-         Use fetch to replace them with dynamic data from GET https://json-server-ft3qa5--3000.local.webcontainer.io/api/v1/courses 
-         Use your own unique URL you recorded, not the sample one above. -->
         <option selected value="">Choose Courses</option>
       </select>
 
       <div id="restOfBody">
         <br />
-        <!-- TO Done: Don't show the uvu id text input box until a course was selected above. -->
-        <!-- TO Done: If course ever becomes unselected, don't show the uvu id text input box.-->
-
         <label for="uvuId">UVU ID</label>
         <br />
-        <!-- TODO: write `10234567` as sample data on the input field below  -->
-        <!-- TODO: Ensure the character length never exceeds 8 -->
-        <!-- TODO: Only numbers, no letters or other characters-->
-        <!-- TODO: When character length reaches 8 and it's only digits, fire off ajax request, if 200 or 304, display results, else appropriately guide the user. -->
         <input
           type="number"
           id="uvuId"
@@ -50,45 +35,43 @@
           min="10000000"
           oninput="checkIt(this.value)"
         />
-        <!-- TODO: The following options are currently static values to show you an example.  -->
-        <!-- You must replace them with dynamic data by ajaxing GET https://json-server-ft3qa5--3000.local.webcontainer.io/logs?courseId=<courseID>&uvuId=<uvuID> -->
-        <h3 id="uvuIdDisplay" data-cy="uvuIdDisplay">
-          
-        </h3>
-        <ul data-cy="logs">
-          <!-- TODO: Click anywhere on the log to toggle visibility of the log (text only, not the date)-->
-          <li>
-            <div><small>1/23/2021 1:23:36 PM</small></div>
-            <pre>Initial comment. Hello World</pre>
-          </li>
-          <li>
-            <div><small>1/24/2021 2:43:12 PM</small></div>
-            <pre>
-MongoDB is looking really good, still need to get atlas up and running.</pre
-            >
-          </li>
-          <li>
-            <div><small>1/27/2021 5:58:10 PM</small></div>
-            <pre>Atlas is up and running</pre>
-          </li>
-        </ul>
+
+        <h3 id="uvuIdDisplay" data-cy="uvuIdDisplay"></h3>
+        <ul data-cy="logs" id="logsList"></ul>
         <label>New Log</label>
         <br />
-        <textarea
-          style="height: 75px"
-          aria-label="add log textarea"
-          data-cy="log_textarea"
-        >
+        <textarea aria-label="add log textarea" data-cy="log_textarea">
         </textarea>
         <br />
-        <!-- TODO: Button should be disabled until there are logs displayed -->
-        <button type="submit" data-cy="add_log_btn">Add Log</button>
+        <button type="submit" id="submitButton" disabled data-cy="add_log_btn">
+          Add Log
+        </button>
       </div>
     </form>
-    <!-- TODO: Script tag to your javascript file -->
+
     <script src="script.js"></script>
   </body>
-  <!-- TODO: add appropriate comments you feel are necessary, if any, for the next coder to understand -->
+  <!-- My brother in Christ, This is a garbage fire and I hate it. Please, Just burn it to the ground while you have a chance. 
+  Basically most of the stuff went well until the server codes are being used, then it got bad.
+  I spent way too long not having the ID's in the logs -->
 </html>
 
-<!-- TODO: move all TODOs that done above to down below here and change the label to DONE:. -->
+<!-- TO Done: move all TODOs that done above to down below here and change the label to DONE:. -->
+<!-- TO Done: add appropriate comments you feel are necessary, if any, for the next coder to understand -->
+<!-- To Done: Script tag to your javascript file -->
+<!-- To Done: Button should be disabled until there are logs displayed -->
+<!-- To Done: Click anywhere on the log to toggle visibility of the log (text only, not the date)-->
+<!-- To Done: The following options are currently static values to show you an example.  -->
+<!-- To Done: write `10234567` as sample data on the input field below  -->
+<!-- TO Done: Ensure the character length never exceeds 8 -->
+<!-- TO Done: Only numbers, no letters or other characters-->
+<!-- TO Done ISH: When character length reaches 8 and it's only digits, fire off ajax request, if 200 or 304, display results, else appropriately guide the user. -->
+<!-- TO Done: Don't show the uvu id text input box until a course was selected above. -->
+<!-- TO Done: If course ever becomes unselected, don't show the uvu id text input box.-->
+<!-- TO Done: The following options are currently static values to show you sample data. 
+         Use fetch to replace them with dynamic data from GET https://json-server-ft3qa5--3000.local.webcontainer.io/api/v1/courses 
+         Use your own unique URL you recorded, not the sample one above. -->
+<!-- TO Done: set the lang attribute to American English -->
+<!-- TO Done: set the characterset to utf8 -->
+<!-- TO Done: temporarily use stackoverflow's favicon. "https://cdn.sstatic.net/Sites/stackoverflow/Img/favicon.ico"-->
+<!-- TO Done: Load your CSS file -->
