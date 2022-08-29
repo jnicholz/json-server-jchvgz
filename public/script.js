@@ -57,8 +57,8 @@ async function getNotes(id) {
     .then((data) => {
       console.log(JSON.stringify(Response));
       for (datum in data) {
-        console.log(logIDList);
-        if (!(data[datum].id in logIDList)) {
+        console.log(logIDList.findIndex(data[datum].id) == -1);
+        if (logIDList.findIndex(data[datum].id) == -1) {
           document.getElementById(
             "logsList"
           ).innerHTML += `<li onclick="toggleIt( '${data[datum].id}' )">
@@ -70,7 +70,6 @@ async function getNotes(id) {
                 <p id="${data[datum].id}" style="display:block">
                   ${data[datum].text}
                 </p></li>`;
-
           logIDList.push(data[datum].id);
         }
       }
