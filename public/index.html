@@ -40,10 +40,19 @@
         <ul data-cy="logs" id="logsList"></ul>
         <label>New Log</label>
         <br />
-        <textarea aria-label="add log textarea" data-cy="log_textarea">
-        </textarea>
-        <br />
-        <button type="submit" id="submitButton" disabled data-cy="add_log_btn">
+        <textarea
+          aria-label="add log textarea"
+          data-cy="log_textarea"
+          id="logInput"
+        ></textarea>
+        <br/>
+        <button
+          type="submit"
+          id="submitButton"
+          disabled
+          data-cy="add_log_btn"
+          onclick="sendIt()"
+        >
           Add Log
         </button>
       </div>
