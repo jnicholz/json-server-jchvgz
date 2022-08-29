@@ -57,18 +57,20 @@ async function getNotes(id) {
     .then((data) => {
       console.log(JSON.stringify(Response));
       for (datum in data) {
-        if (data[datum].id in logIDList) {
+        console.log(logIDList);
+        if (!(data[datum].id in logIDList)) {
           document.getElementById(
             "logsList"
           ).innerHTML += `<li onclick="toggleIt( '${data[datum].id}' )">
-              <div>
-                <small> 
-                  ${data[datum].date}
-                </small>
-              </div>
-              <p id="${data[datum].id}" style="display:block">
-                ${data[datum].text}
-              </p></li>`;
+                <div>
+                  <small> 
+                    ${data[datum].date}
+                  </small>
+                </div>
+                <p id="${data[datum].id}" style="display:block">
+                  ${data[datum].text}
+                </p></li>`;
+
           logIDList.push(data[datum].id);
         }
       }
