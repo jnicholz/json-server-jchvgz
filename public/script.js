@@ -4,6 +4,7 @@ var courseSel = "";
 var courses = {};
 var stat;
 var stdID;
+var logIDList = [];
 function createUUID() {
   return "xxxxxxx".replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,
@@ -56,17 +57,20 @@ async function getNotes(id) {
     .then((data) => {
       console.log(JSON.stringify(Response));
       for (datum in data) {
-        document.getElementById(
-          "logsList"
-        ).innerHTML += `<li onclick="toggleIt( '${data[datum].id}' )">
-            <div>
-              <small> 
-                ${data[datum].date}
-              </small>
-            </div>
-            <p id="${data[datum].id}" style="display:block">
-              ${data[datum].text}
-            </p></li>`;
+        if (data[datum].id in logIDList) {
+          document.getElementById(
+            "logsList"
+          ).innerHTML += `<li onclick="toggleIt( '${data[datum].id}' )">
+              <div>
+                <small> 
+                  ${data[datum].date}
+                </small>
+              </div>
+              <p id="${data[datum].id}" style="display:block">
+                ${data[datum].text}
+              </p></li>`;
+          logIDList.push(data[datum].id);
+        }
       }
       document.getElementById("submitButton").removeAttribute("disabled");
     });
@@ -116,6 +120,7 @@ async function sendIt() {
       .then((response) => response.json())
       .then((data) => {
         console.log("Success:", data);
+        getNotes(stdID);
       })
       .catch((error) => {
         console.error("Error:", error);
