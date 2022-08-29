@@ -86,15 +86,15 @@ async function sendIt() {
   let idToUse =createUUID()
   const data = `"courseId": "${courseSel}","uvuId": "${stdID}","date": "${rn.toLocaleString()}","text": "${
     document.getElementById('logInput').value
-  }","id": ${idToUse}`;
+  }","id": "${idToUse}"`;
   console.log(data);
   try {
     let response = await fetch(
       `https://json-server-jchvgz--3000.local.webcontainer.io/api/v1/logs`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'contentType': 'application/json', 
+          "contentType": "application/json", 
           "courseId": `"${courseSel}"`,
           "uvuId": `"${stdID}"`,
           "date": `"${rn.toLocaleString()}"`,
