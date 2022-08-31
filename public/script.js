@@ -57,9 +57,22 @@ async function getNotes(id) {
     .then((data) => {
       console.log(JSON.stringify(Response));
       for (datum in data) {
-        document.getElementById(
-          "logsList"
-        ).innerHTML += `<li onclick="toggleIt( '${data[datum].id}' )">
+        let skip = false;
+        // console.log(datum.id);
+        // console.log(logIDList);
+        //Fuck it, bring out the shit tier code. Cant figure out why these array values are dogshit when checking
+        for (ids in logIDList) {
+          if (logIDList[ids] === data[datum].id) {
+            skip = true;
+            break;
+          } else {
+            console.log("add ");
+          }
+        }
+        if (!skip) {
+          document.getElementById(
+            "logsList"
+          ).innerHTML += `<li onclick="toggleIt( '${data[datum].id}' )">
                 <div>
                   <small> 
                     ${data[datum].date}
@@ -68,9 +81,12 @@ async function getNotes(id) {
                 <p id="${data[datum].id}" style="display:block">
                   ${data[datum].text}
                 </p></li>`;
-        logIDList.push(data[datum].id);
+          logIDList.push(data[datum].id);
+
+          console.log(logIDList);
+          document.getElementById("submitButton").removeAttribute("disabled");
+        }
       }
-      document.getElementById("submitButton").removeAttribute("disabled");
     });
 }
 function toggleIt(data) {
