@@ -1,10 +1,15 @@
-// TODO: Wire up the app's behavior here.
-// NOTE: The TODOs are listed in index.html
+// I know you hate the "trash comments." I left in the // Console.logs because I can just do a find+replace for "// Cons" to start debugging immediately
+
 var courseSel = "";
 var courses = {};
 var stat;
-var stdID;
+var stdID = null;
 var logIDList = [];
+var currTheme = "bg-PriSilver"
+var PriColorNodes
+var SecColorNodes
+var MainPage
+
 function createUUID() {
   return "xxxxxxx".replace(/[xy]/g, function (c) {
     var r = (Math.random() * 16) | 0,
@@ -12,133 +17,160 @@ function createUUID() {
     return v.toString(16);
   });
 }
+
 async function getCourses() {
-  console.log("get Courses triggered");
-  fetch("https://json-server-jchvgz--3000.local.webcontainer.io/api/v1/courses")
-    .then((response) => response.json())
-    .then((data) => {
-      for (datum in data) {
-        document.getElementById(
-          "course"
-        ).innerHTML += `<option value=${data[datum].id}>${data[datum].display}</option>`;
-      }
-      courses = data;
-    });
+  // console.log("get Courses triggered");
+  if(courseSel==""){
+    response = await axios("/api/v1/courses");
+    for (datum in response.data) {
+      $(
+        "#course"
+      ).innerHTML += `<option value=${response.data[datum].id}>${response.data[datum].display}</option>`;
+    }
+    courses = response.data;
+  }
 }
-function peekABoo(data) {
+
+function checkTheme(){
+  // console.log ("theme checked")
+  PriColorNodes=document.querySelectorAll("div.bg-PriGreen")
+  SecColorNodes=document.querySelectorAll(".bg-PriSilver")
+  MainPage = document.querySelectorAll(".bg-PriWhite")  
+  console.log(`user pref: ${localStorage.theme} `)
+  console.log(`OS pref: Dark:${window.matchMedia('(prefers-color-scheme: dark)').matches} Light:${window.matchMedia('(prefers-color-scheme: light)').matches}`)
+  
+  if(localStorage.theme ){
+    setTheme(localStorage.theme)
+  }
+ 
+  //Branch here to check call of theme
+  else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    setTheme("dark")
+    console.log("OS Pref: Dark")  
+  }
+
+  else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+    setTheme("light")
+    localStorage.setItem("theme", "light")
+    console.log("OS Pref: Light") 
+  }
+  else{
+    console.log("no OS Pref, Setting to Light theme")
+  }
+}
+
+function setTheme(data){
+  if (data == "dark"){
+    localStorage.setItem("theme", "dark")
+    currTheme = "bg-PriGreen"
+    modifyColors(PriColorNodes,"bg-PriGreen","bg-SecMedGrn")
+    modifyColors(SecColorNodes,"bg-PriSilver","bg-PriGreen")
+    modifyColors(MainPage,"bg-PriWhite","bg-PriBlack")
+    document.getElementById("themeToggle").setAttribute("onclick","setTheme('light')")    
+
+  }
+  else{
+    localStorage.setItem("theme", "light")
+    modifyColors(PriColorNodes,"bg-SecMedGrn","bg-PriGreen")
+    modifyColors(SecColorNodes,"bg-PriGreen","bg-PriSilver")
+    modifyColors(MainPage, "bg-PriBlack", "bg-PriWhite")
+    document.getElementById("themeToggle").setAttribute("onclick","setTheme('dark')")      
+  }
+}
+
+function modifyColors(obj, target, replacement ){
+    obj.forEach(node => {
+    node.classList.remove(target)
+    node.classList.add(replacement)
+  })
+}; 
+
+function toggleFormBody(data) {
+  let form = $("#restOfBody");
   if (data != 0) {
-    document.getElementById("restOfBody").style.display = "block";
-    courseSel = courses[data].id;
+    show(form);
+    courseSel = courses[data - 1].id;
+    if (stdID != null) {
+      removeList();
+      getNotes(stdID);
+    }
   } else {
-    document.getElementById("restOfBody").style.display = "none";
+    hide(form);
     courseSel = "";
   }
 }
 
-async function checkIt(data) {
-  console.log(data);
+function removeList() {
+  $("#logsList").innerHTML = "";
+  logIDList = [];
+}
+
+async function checkID(data) {
   if (!isNaN(data)) {
-    if (data > 9999999) {
-      console.log("it be 8 char");
-      document.getElementById(
-        "uvuIdDisplay"
-      ).innerText = `Student Logs for ${data}`;
+    if (100000000 > data && data > 9999999) {
+      $("#uvuIdDisplay").innerText = `Student Logs for ${data}`;
       stdID = data;
       getNotes(data);
     }
   }
 }
 async function getNotes(id) {
-  console.log("get notes triggered");
-  fetch(
-    `https://json-server-jchvgz--3000.local.webcontainer.io/api/v1/logs?courseId=${courseSel}&uvuId=${id}`
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(JSON.stringify(Response));
-      for (datum in data) {
-        let skip = false;
-        // console.log(datum.id);
-        // console.log(logIDList);
-        //Fuck it, bring out the shit tier code. Cant figure out why these array values are dogshit when checking
-        for (ids in logIDList) {
-          if (logIDList[ids] === data[datum].id) {
-            skip = true;
-            break;
-          } else {
-            console.log("add ");
-          }
-        }
-        if (!skip) {
-          document.getElementById(
-            "logsList"
-          ).innerHTML += `<li onclick="toggleIt( '${data[datum].id}' )">
-                <div>
-                  <small> 
+  // console.log("get notes triggered");
+  let response = await axios({
+    method: "get",
+    url: `/api/v1/logs?courseId=${courseSel}&uvuId=${id}`,
+  });
+  let data = response.data;
+  for (datum in data) {
+    let skip = false;
+    for (ids in logIDList) {
+      if (logIDList[ids] === data[datum].id) {
+        skip = true;
+        break;
+      }
+    }
+    if (!skip) {
+      $(
+        "#logsList"
+      ).innerHTML += `<li onclick="toggleNote( '#${data[datum].id}')" class ="my-2 px-5 ${currTheme} rounded">
+                  <small class="self-end"> 
                     ${data[datum].date}
                   </small>
-                </div>
-                <p id="${data[datum].id}" style="display:block">
+                <p style="display:block" id="${data[datum].id}">
                   ${data[datum].text}
                 </p></li>`;
-          logIDList.push(data[datum].id);
-
-          console.log(logIDList);
-          document.getElementById("submitButton").removeAttribute("disabled");
-        }
-      }
-    });
+      logIDList.push(data[datum].id);
+    }
+  }
+  $("#submitButton").removeAttribute("disabled");
 }
-function toggleIt(data) {
-  console.log(data);
-  disp = document.getElementById(data).style.display;
+function toggleNote(data) {
+  disp = $(data).style.display;
   if (disp == "block") {
-    console.log("at block");
-    document.getElementById(data).style.display = "none";
+    hide($(data));
   } else {
-    document.getElementById(data).style.display = "block";
+    show($(data));
   }
 }
 async function sendIt() {
   let rn = new Date();
   let idToUse = createUUID();
-  let text = document.getElementById("logInput").value;
+  let text = $("#logInput").value;
 
-  const data = {
-    courseId: courseSel,
-    uvuId: stdID,
-    date: rn.toLocaleString(),
-    text: document.getElementById("logInput").value,
-    id: idToUse,
-  };
-  console.log(JSON.stringify(data));
   try {
-    let response = await fetch(
-      `https://json-server-jchvgz--3000.local.webcontainer.io/api/v1/logs?courseId=${courseSel}&uvuId=${stdID}&id=${idToUse}&courseId=${courseSel}&date=${rn.toLocaleString()}&text=${text}`,
-      {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-          id: `${idToUse}`,
-          courseId: `${courseSel}`,
-          uvuId: `${stdID}`,
-          date: `${rn.toLocaleString()}`,
-          text: `${text}`,
-        },
-        body: JSON.stringify(data),
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
-        getNotes(stdID);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    let response = await axios({
+      method: "post",
+      url: `/api/v1/logs?courseId=${courseSel}&uvuId=${stdID}&id=${idToUse}&courseId=${courseSel}&date=${rn.toLocaleString()}&text=${text}`,
+      data: {
+        courseId: courseSel,
+        uvuId: stdID,
+        date: rn.toLocaleString(),
+        text: $("#logInput").value,
+        id: idToUse,
+      },
+    });
+    // console.log(response);
+    getNotes(stdID);
   } catch (err) {
     console.log(err);
   }
